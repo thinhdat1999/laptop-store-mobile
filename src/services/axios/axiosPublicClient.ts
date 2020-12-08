@@ -1,0 +1,33 @@
+import axios from "axios";
+import queryString from "query-string";
+import { setMessage } from "../redux/slices/messageSlice";
+import store from "../redux/store";
+const axiosPublicClient = axios.create({
+    baseURL: "https://dnstore.codes/api/",
+    paramsSerializer: (params) => queryString.stringify(params, { arrayFormat: "comma" }),
+});
+
+axiosPublicClient.interceptors.request.use(async (config) => {
+    const contentType = config.headers["Content-Type"];
+    if (!contentType) {
+        config.headers["Content-Type"] = "application/json";
+    }
+    return config;
+});
+
+axiosPublicClient.interceptors.response.use(
+    async (response) => {
+        return response;
+    },
+    (error) => {
+        // if (error.response.status === 500) {
+        //     console.log("Lỗi hệ thống");
+        // } else {
+        //     console.log(error.response.data);
+        // }
+        store.dispatch(setMessage(error.response.data));
+        throw error;
+    }
+);
+
+export default axiosPublicClient;
