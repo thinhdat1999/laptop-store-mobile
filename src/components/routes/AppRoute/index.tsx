@@ -7,6 +7,7 @@ import { useStore } from 'react-redux';
 import LoginPage from '../../../scenes/Auth/scenes/LoginPage';
 import RegisterPage from '../../../scenes/Auth/scenes/RegisterPage';
 import DetailPage from '../../../scenes/Guest/scenes/DetailPage';
+import FullImageScene from '../../../scenes/Guest/scenes/DetailPage/components/ProductImages/scenes/FullImageScene';
 import AddressPage from '../../../scenes/User/scenes/AddressPage';
 import InfoPage from '../../../scenes/User/scenes/InfoPage';
 import { userApi } from '../../../services/api/userApi';
@@ -50,6 +51,7 @@ const AppRoute = () => {
 
   const guestScreens = {
     Detail: DetailPage,
+    FullImage: FullImageScene,
   };
 
   const authScreens = {

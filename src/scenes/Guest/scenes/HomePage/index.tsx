@@ -68,8 +68,8 @@ const HomePage = ({ navigation, route }: any) => {
         loadData();
     }, [loading])
 
-    const pressHandler1 = (id: number) => {
-        navigation.navigate("Detail", { id: id });
+    const navigateToDetailScreen = (productId: number) => {
+        navigation.navigate("Detail", { productId: productId });
     }
 
     return (
@@ -91,7 +91,7 @@ const HomePage = ({ navigation, route }: any) => {
                 }}
                 ListFooterComponent={() => loading ? <ActivityIndicator style={{ borderColor: "grey" }} /> : null}
                 renderItem={({ item }) => (
-                    <SC.List onPress={() => pressHandler1(item.id)}>
+                    <SC.List onPress={() => navigateToDetailScreen(item.id)}>
                         <Image
                             style={{
                                 width: 150,

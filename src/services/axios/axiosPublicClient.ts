@@ -4,6 +4,7 @@ import { setMessage } from "../redux/slices/messageSlice";
 import store from "../redux/store";
 const axiosPublicClient = axios.create({
     baseURL: "https://dnstore.codes/api/",
+    // baseURL: "http://192.168.30.132:8081/api/",
     paramsSerializer: (params) => queryString.stringify(params, { arrayFormat: "comma" }),
 });
 

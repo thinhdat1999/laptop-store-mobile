@@ -1,47 +1,65 @@
-import React from 'react';
-import { Button } from 'react-native';
-import Icon from 'react-native-vector-icons/AntDesign';
+import React, { useMemo, useState } from 'react';
+import Icon from 'react-native-vector-icons/FontAwesome';
 import { useDispatch } from 'react-redux';
 import laptopApi from '../../../../services/api/laptopApi';
-import { setTitle } from '../../../../services/redux/slices/titleSlice';
+import ProductImages from './components/ProductImages';
 import { SC } from './styles';
 
 
-type DetailPageProps = {
-    navigation: any
+type ProductInfoStates = {
+    image_ids: number[],
+    productAlt: string,
+    loading: boolean,
 }
 
 const DetailPage = ({ route, navigation }: any) => {
-    console.log("DETAIL PAGE");
-    const {id} = route.params;
+    const { productId } = route.params;
     const dispatch = useDispatch();
 
+
+
+    const initialState = useMemo<ProductInfoStates>(() =>
+        ({
+            image_ids: [],
+            productAlt: "",
+            loading: true,
+        })
+        , [])
+
+    const [state, setState] = useState<ProductInfoStates>(initialState);
+
+    const { image_ids, productAlt, loading } = state;
     React.useLayoutEffect(() => {
         navigation.setOptions({
-            headerTitle: "Test Login",
+            headerTitle: null,
             headerRight: () => (
-                <Button
-                    onPress={() => alert('This is a button!')}
-                    title="Info"
-                    color="#eee"
-                />
+                <SC.CartButton onPress={() => alert('This is a button!')}>
+                    <Icon name="shopping-cart" size={30} color="#bbb" />
+                </SC.CartButton>
             ),
         })
     }, [navigation])
 
     React.useEffect(() => {
         const loadData = async () => {
-            const response = await laptopApi.getDetailById(id);
-            console.log(id);
+            const response = await laptopApi.getDetailById(productId);
+            setState((prev) => (
+                {
+                    ...prev,
+                    image_ids: response.data["image_ids"],
+                    productAlt: response.data["spec"]["alt"],
+                    loading: false,
+                }))
         }
         loadData();
     }, [])
 
 
     return (
+        loading ? <SC.Text>Loading</SC.Text> :
         <SC.Container>
-            <SC.Text>Detail Page</SC.Text>
-            {/* <SC.Text>{ navigation.getParam()}</SC.Text> */}
+            <ProductImages key={productId} image_ids={image_ids} productId = {productId} productAlt = {productAlt} />
+            <SC.Text>Another block</SC.Text>
         </SC.Container>
     );
 }

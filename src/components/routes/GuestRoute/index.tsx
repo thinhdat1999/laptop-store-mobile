@@ -7,7 +7,7 @@ import Icon from 'react-native-vector-icons/AntDesign';
 const Stack = createStackNavigator();
 
 const GuestRoute = () => {
-    console.log("GUEST ROUTE");
+
 
     return (
         <Stack.Navigator
