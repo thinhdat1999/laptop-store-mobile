@@ -3,6 +3,7 @@ import { ActivityIndicator, FlatList, Image } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import laptopApi from '../../../../services/api/laptopApi';
+import { formatCurrency } from '../../../../services/helper/currency';
 import ProductOverviewModel from '../../../../values/models/ProductSummaryModel';
 import { SC } from './styles';
 
@@ -42,11 +43,9 @@ const HomePage = ({ navigation, route }: any) => {
     }, [navigation, route])
 
     React.useEffect(() => {
-        console.log(loading);
         if (!loading) return;
         const loadData = async () => {
             try {
-                console.log("load data");
                 const response = await laptopApi.getByCategory("latest", page);
                 const newProducts = [...products, ...response.data];
                 const length = parseInt(response.headers["x-total-count"]);
@@ -57,7 +56,6 @@ const HomePage = ({ navigation, route }: any) => {
                     isDone: newProducts.length === length,
                     length: length,
                 }));
-                console.log(products);
             } catch (err) {
                 setState((prev) => ({
                     ...prev,
@@ -80,7 +78,6 @@ const HomePage = ({ navigation, route }: any) => {
                 keyExtractor={(item) => item.id.toString()}
                 onEndReachedThreshold={0.5}
                 onEndReached={() => {
-                    console.log("reach");
                     if (!isDone && !loading) {
                         setState((prev) => ({
                             ...prev,
@@ -89,7 +86,7 @@ const HomePage = ({ navigation, route }: any) => {
                         }))
                     }
                 }}
-                ListFooterComponent={() => loading ? <ActivityIndicator style={{ borderColor: "grey" }} /> : null}
+                ListFooterComponent={() => loading ? <ActivityIndicator size="large" color="white" /> : null}
                 renderItem={({ item }) => (
                     <SC.List onPress={() => navigateToDetailScreen(item.id)}>
                         <Image
@@ -108,8 +105,8 @@ const HomePage = ({ navigation, route }: any) => {
                             - RAM {item.ram} - {item.hard_drive}
                         </SC.ItemSpec>
                         <SC.Text>
-                            <SC.UnitPrice>{item.unit_price.toLocaleString()}đ </SC.UnitPrice>
-                         - <SC.OriginPrice>{item.discount_price.toLocaleString()}</SC.OriginPrice>đ
+                            <SC.UnitPrice>{formatCurrency(item.unit_price)}đ </SC.UnitPrice>
+                         - <SC.OriginPrice>{formatCurrency(item.discount_price)}</SC.OriginPrice>đ
                         </SC.Text>
                     </SC.List>
                 )}

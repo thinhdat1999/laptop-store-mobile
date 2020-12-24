@@ -1,14 +1,20 @@
 import React, { useMemo, useState } from 'react';
+import { Text } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { useDispatch } from 'react-redux';
 import laptopApi from '../../../../services/api/laptopApi';
+import ProductOverviewModel from '../../../../values/models/ProductSummaryModel';
+import ContentBlock from './components/ContentBlock';
 import ProductImages from './components/ProductImages';
+import SpecInfo from './components/SpecInfo';
+import SuggestBlock from './components/SuggestBlock';
 import { SC } from './styles';
 
 
 type ProductInfoStates = {
     image_ids: number[],
-    productAlt: string,
+    productSpec: any,
+    suggestions: ProductOverviewModel[],
     loading: boolean,
 }
 
@@ -19,16 +25,17 @@ const DetailPage = ({ route, navigation }: any) => {
 
 
     const initialState = useMemo<ProductInfoStates>(() =>
-        ({
-            image_ids: [],
-            productAlt: "",
-            loading: true,
-        })
+    ({
+        image_ids: [],
+        productSpec: null,
+        suggestions: [],
+        loading: true,
+    })
         , [])
 
     const [state, setState] = useState<ProductInfoStates>(initialState);
 
-    const { image_ids, productAlt, loading } = state;
+    const { image_ids, productSpec, suggestions, loading } = state;
     React.useLayoutEffect(() => {
         navigation.setOptions({
             headerTitle: null,
@@ -43,11 +50,13 @@ const DetailPage = ({ route, navigation }: any) => {
     React.useEffect(() => {
         const loadData = async () => {
             const response = await laptopApi.getDetailById(productId);
+            console.log(response);
             setState((prev) => (
                 {
                     ...prev,
                     image_ids: response.data["image_ids"],
-                    productAlt: response.data["spec"]["alt"],
+                    productSpec: response.data["spec"],
+                    suggestions: response.data["suggestions"],
                     loading: false,
                 }))
         }
@@ -57,10 +66,16 @@ const DetailPage = ({ route, navigation }: any) => {
 
     return (
         loading ? <SC.Text>Loading</SC.Text> :
-        <SC.Container>
-            <ProductImages key={productId} image_ids={image_ids} productId = {productId} productAlt = {productAlt} />
-            <SC.Text>Another block</SC.Text>
-        </SC.Container>
+            <SC.Container>
+                <SC.Content>
+                    <ProductImages key={productId} image_ids={image_ids} productSpec={productSpec} />
+                    <ContentBlock title="Thông tin cơ bản" component={<SpecInfo key={productId} productSpec={productSpec} />} />
+                    <ContentBlock title="Sản phẩm tương tự" component={<SuggestBlock key={productId} suggestions={suggestions} />} />
+                </SC.Content>
+                <SC.ActionBar>
+                    <SC.OrderButton><SC.OrderText>Chọn mua</SC.OrderText></SC.OrderButton>
+                </SC.ActionBar>
+            </SC.Container>
     );
 }
 

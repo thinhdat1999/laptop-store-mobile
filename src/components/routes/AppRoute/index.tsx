@@ -51,7 +51,6 @@ const AppRoute = () => {
 
   const guestScreens = {
     Detail: DetailPage,
-    FullImage: FullImageScene,
   };
 
   const authScreens = {
@@ -83,8 +82,9 @@ const AppRoute = () => {
             ...userScreens,
             ...authScreens,
           }).map(([name, component]) => (
-            <Stack.Screen key={name} name={name} component={component} />
+            <Stack.Screen key={name} name={name} component={component}/>
           ))}
+          <Stack.Screen key="FullImage" name="FullImage" component={FullImageScene} options={{headerShown: false}} />
         </Stack.Navigator>
       </NavigationContainer>
     // <Stack.Navigator screenOptions={({ route }) => ({

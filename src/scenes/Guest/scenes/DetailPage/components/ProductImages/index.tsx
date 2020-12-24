@@ -1,17 +1,17 @@
-import React, { useState } from "react";
-import ReactImageGallery from "react-image-gallery";
-import { SC } from "./styles";
-import { useSelector } from "react-redux";
-import { RootState } from "../../../../../../services/redux/rootReducer";
-import { Dimensions, Image, NativeScrollEvent, Text, View } from "react-native";
-import { ScrollView, TouchableHighlight, TouchableOpacity } from "react-native-gesture-handler";
 import { useNavigation } from "@react-navigation/native";
+import React, { useState } from "react";
+import { Dimensions, Image, Text, View } from "react-native";
+import { TouchableOpacity } from "react-native-gesture-handler";
+import { Rating } from 'react-native-ratings';
+import { formatCurrency } from "../../../../../../services/helper/currency";
+import { SC } from "./styles";
 
 const ProductImages = (props: any) => {
     const imageIds = props.image_ids;
-    const productId = props.productId;
-    const productAlt = props.productAlt;
-
+    const productId = props.productSpec["id"];
+    const productAlt = props.productSpec["alt"];
+    const price = props.productSpec["unit_price"];
+    const re = /(\d)(?=(\d{3})+(?!\d))/g
     const [activeIndex, setIndex] = useState(0);
 
     const navigation = useNavigation();
@@ -45,21 +45,18 @@ const ProductImages = (props: any) => {
         }))
     );
 
-    React.useEffect(() => {
-        console.log(imageIds);
-        console.log(productAlt);
+    // React.useEffect(() => {
+    // }, [])
 
-    }, [])
-
-    const change = ({ nativeEvent } : any) => {
-        const slide = Math.ceil(nativeEvent.contentOffset.x / nativeEvent.layoutMeasurement.width);
+    const change = ({ nativeEvent }: any) => {
+        const slide = Math.round(nativeEvent.contentOffset.x / nativeEvent.layoutMeasurement.width);
         if (slide !== activeIndex) {
             setIndex(slide);
 
         }
     }
     return (
-        <View>
+        <SC.Container>
             <SC.ScrollView
                 pagingEnabled
                 horizontal
@@ -71,8 +68,8 @@ const ProductImages = (props: any) => {
                     <TouchableOpacity
                         key={index}
                         activeOpacity={1}
-                        onPress={() => navigation.navigate("FullImage", {images: images, activeIndex: activeIndex})}
-                    > 
+                        onPress={() => navigation.navigate("FullImage", { images: images, activeIndex: activeIndex })}
+                    >
                         <Image
                             style={{
                                 width: width,
@@ -90,7 +87,27 @@ const ProductImages = (props: any) => {
                     {activeIndex + 1}/{images.length}
                 </SC.Pagination>
             </View>
-        </View>
+            <SC.Text>{props.productSpec["name"]}</SC.Text>
+            <SC.RatingContainer>
+                <Rating
+                    startingValue={props.productSpec["avg_rating"]}
+                    type="star"
+                    ratingColor="darkorange"
+                    ratingBackgroundColor="gray"
+                    readonly
+                    imageSize={20}
+                    style={{ paddingVertical: 10, alignItems: "flex-start" }}
+                />
+                <Text>(Xem chi tiết đánh giá)</Text>
+            </SC.RatingContainer>
+            <SC.PriceContainer>
+                <SC.UnitPrice>{formatCurrency(props.productSpec["unit_price"])} đ</SC.UnitPrice>
+                <SC.OriginalPrice>{formatCurrency(props.productSpec["unit_price"] + props.productSpec["discount_price"])} đ</SC.OriginalPrice>
+                <SC.DiscountPrice>-{(props.productSpec["discount_price"] / ((props.productSpec["unit_price"] + props.productSpec["discount_price"])) * 100).toFixed(1)}%</SC.DiscountPrice>
+            </SC.PriceContainer>
+            
+
+        </SC.Container>
 
     );
 };

@@ -21,11 +21,6 @@ axiosPublicClient.interceptors.response.use(
         return response;
     },
     (error) => {
-        // if (error.response.status === 500) {
-        //     console.log("Lỗi hệ thống");
-        // } else {
-        //     console.log(error.response.data);
-        // }
         store.dispatch(setMessage(error.response.data));
         throw error;
     }
