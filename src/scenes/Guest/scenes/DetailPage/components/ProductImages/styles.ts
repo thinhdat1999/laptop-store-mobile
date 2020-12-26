@@ -24,6 +24,7 @@ const Text = styled.Text`
 
 const Container = styled.View`
     background-color: white;
+    margin-bottom: 20px;
 `;
 
 const RatingContainer = styled.View`

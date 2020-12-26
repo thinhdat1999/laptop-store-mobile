@@ -24,11 +24,14 @@ const FullImageScene = ({ route, navigation }: any) => {
     }
 
     React.useEffect(() => {
+        //@ts-ignore
         scrollView.current.scrollTo({ x: width * currentIndex });
+        //@ts-ignore
         scrollView2.current.scrollTo({ x: 80 * currentIndex });
     }, [])
 
     React.useEffect(() => {
+        //@ts-ignore
         scrollView2.current.scrollTo({ x: 80 * currentIndex });
     }, [currentIndex])
 
@@ -41,7 +44,7 @@ const FullImageScene = ({ route, navigation }: any) => {
                     navigation.goBack();
                 }}
             >
-                <Icon name="close" size={30} color="grey"/>
+                <Icon name="close" size={30} color="grey" />
             </SC.BackButton>
             <SC.ScrollView
                 pagingEnabled
@@ -74,7 +77,9 @@ const FullImageScene = ({ route, navigation }: any) => {
                         key={k}
                         activeOpacity={1}
                         onPress={() => {
+                            //@ts-ignore
                             scrollView2.current.scrollTo({ x: k * 60 });
+                            //@ts-ignore
                             scrollView.current.scrollTo({ x: width * k });
                         }}
                         active={currentIndex === k ? true : false}

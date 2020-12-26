@@ -96,6 +96,7 @@ const ProductImages = (props: any) => {
                     ratingBackgroundColor="gray"
                     readonly
                     imageSize={20}
+                    //@ts-ignore
                     style={{ paddingVertical: 10, alignItems: "flex-start" }}
                 />
                 <Text>(Xem chi tiết đánh giá)</Text>

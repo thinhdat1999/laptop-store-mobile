@@ -2,10 +2,10 @@ import styled from 'styled-components/native'
 
 const Container = styled.View`
     flex: 1;
-    alignItems: center;
+    align-items: center;
     padding: 0;
     margin: 0 auto;
-    justifyContent: center;
+    justify-content: center;
 `;
 
 const Text = styled.Text`

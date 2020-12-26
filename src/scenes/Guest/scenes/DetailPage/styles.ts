@@ -18,10 +18,6 @@ const Text = styled.Text`
 `;
 
 
-const CartButton = styled.TouchableOpacity`
-    padding: 15px;
-`;
-
 const ActionBar = styled.View`
     align-items: center;
     height: 8%;
@@ -52,7 +48,6 @@ const OrderText = styled.Text`
 export const SC = {
     Container,
     Text,
-    CartButton,
     Content,
     ActionBar,
     OrderButton,

@@ -1,10 +1,6 @@
 import Icon from 'react-native-vector-icons/FontAwesome';
 import styled from 'styled-components/native'
 
-const CartButton = styled.TouchableOpacity`
-    padding: 15px;
-`;
-
 const Filter = styled.TouchableOpacity`
     flex: 1;
     display: flex;
@@ -23,7 +19,6 @@ const SearchIcon = styled(Icon)`
 `;
 
 export const SC = {
-    CartButton,
     Filter,
     SearchIcon,
 };

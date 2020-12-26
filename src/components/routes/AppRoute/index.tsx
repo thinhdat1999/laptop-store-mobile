@@ -8,11 +8,14 @@ import LoginPage from '../../../scenes/Auth/scenes/LoginPage';
 import RegisterPage from '../../../scenes/Auth/scenes/RegisterPage';
 import DetailPage from '../../../scenes/Guest/scenes/DetailPage';
 import FullImageScene from '../../../scenes/Guest/scenes/DetailPage/components/ProductImages/scenes/FullImageScene';
+import AllQuestionScene from '../../../scenes/Guest/scenes/DetailPage/components/QuestionBlock/scenes/AllQuestionScene';
+import ReplyScene from '../../../scenes/Guest/scenes/DetailPage/components/QuestionBlock/scenes/ReplyScene';
 import AddressPage from '../../../scenes/User/scenes/AddressPage';
 import InfoPage from '../../../scenes/User/scenes/InfoPage';
 import { userApi } from '../../../services/api/userApi';
 import { setUser } from '../../../services/redux/slices/userSlice';
 import UserModel from '../../../values/models/UserModel';
+import MessageBox from '../../MessageBox';
 import TabRoute from '../TabRoute';
 import { SC } from './styles';
 
@@ -51,6 +54,8 @@ const AppRoute = () => {
 
   const guestScreens = {
     Detail: DetailPage,
+    AllQuestion: AllQuestionScene,
+    ReplyScene: ReplyScene,
   };
 
   const authScreens = {
@@ -85,7 +90,9 @@ const AppRoute = () => {
             <Stack.Screen key={name} name={name} component={component}/>
           ))}
           <Stack.Screen key="FullImage" name="FullImage" component={FullImageScene} options={{headerShown: false}} />
+          {/* <Stack.Screen key="AllQuestion" name="AllQuestion" component={AllQuestionScene} /> */}
         </Stack.Navigator>
+        <MessageBox/>
       </NavigationContainer>
     // <Stack.Navigator screenOptions={({ route }) => ({
     //     ...TransitionPresets.SlideFromRightIOS,

@@ -14,6 +14,7 @@ const SuggestBlock = (props: any) => {
     }, [])
 
     const navigateToDetailScreen = (productId: number) => {
+        // @ts-ignore
         navigation.push("Detail", { productId: productId });
     }
 
@@ -23,6 +24,7 @@ const SuggestBlock = (props: any) => {
             <SC.List
                 horizontal
                 data={Object.values(suggestions)}
+                showsHorizontalScrollIndicator={false}
                 keyExtractor={(item : ProductOverviewModel) => item.id.toString()}
                 renderItem={({ item } : any) => (
                     <SC.SuggestItem onPress = {() => {navigateToDetailScreen(item.id)}}>

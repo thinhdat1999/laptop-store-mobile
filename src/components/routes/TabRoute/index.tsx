@@ -5,6 +5,7 @@ import { Text } from "react-native";
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import HomePage from "../../../scenes/Guest/scenes/HomePage";
 import UserPage from "../../../scenes/User";
+import CartButton from "../../CartButton";
 import { SC } from "./styles";
 
 const Tab = createBottomTabNavigator();
@@ -17,9 +18,7 @@ const TabRoute = ({ navigation, route }: any) => {
       case 'Home':
         return {
           headerRight: () => (
-            <SC.CartButton onPress={() => alert('This is a button!')}>
-              <Icon name="shopping-cart" size={30} color="#bbb" />
-            </SC.CartButton>
+            <CartButton/>
           ),
           headerTitle: () => (
             <SC.Filter onPress={() => {alert("test")}} >

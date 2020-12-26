@@ -1,11 +1,8 @@
 import styled from 'styled-components/native'
 
 const Section = styled.View`
-    margin-top: 30px;
-    /* :not(:last-of-type) {
-        margin-bottom: 30px;
-    } */
     background-color: white;
+    margin-bottom: 20px;
 `;
 
 const Header = styled.Text`
