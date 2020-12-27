@@ -16,7 +16,7 @@ type ItemListStates = {
 
 const AllQuestionScene = ({ navigation, route }: any) => {
 
-    const { productId } = route.params;
+    const { productId, isFocus } = route.params;
 
     React.useLayoutEffect(() => {
         navigation.setOptions({
@@ -89,7 +89,7 @@ const AllQuestionScene = ({ navigation, route }: any) => {
                 )}
             />
             <SC.ReplyForm>
-                <SC.Reply placeholder="Gửi câu hỏi về sản phẩm" multiline={true} ></SC.Reply>
+                <SC.Reply placeholder="Gửi câu hỏi về sản phẩm" multiline={true} autoFocus={isFocus}></SC.Reply>
                 <SC.SendButton><SC.SendButtonTitle>Gửi</SC.SendButtonTitle></SC.SendButton>
             </SC.ReplyForm>
         </SC.Container>

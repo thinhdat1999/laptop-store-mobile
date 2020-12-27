@@ -99,7 +99,7 @@ const ProductImages = (props: any) => {
                     //@ts-ignore
                     style={{ paddingVertical: 10, alignItems: "flex-start" }}
                 />
-                <Text>(Xem chi tiết đánh giá)</Text>
+                <Text> (Xem chi tiết đánh giá)</Text>
             </SC.RatingContainer>
             <SC.PriceContainer>
                 <SC.UnitPrice>{formatCurrency(props.productSpec["unit_price"])} đ</SC.UnitPrice>

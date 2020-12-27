@@ -27,7 +27,7 @@ const ReplyScene = ({ navigation, route }: any) => {
             </SC.QuestionContainer>
 
             <SC.ReplyForm>
-                <SC.Reply placeholder="Gửi câu trả lời cho câu hỏi" multiline={true} ></SC.Reply>
+                <SC.Reply placeholder="Gửi câu trả lời cho câu hỏi" multiline={true} autoFocus={true}></SC.Reply>
                 <SC.SendButton><SC.SendButtonTitle>Gửi</SC.SendButtonTitle></SC.SendButton>
             </SC.ReplyForm>
         </SC.Container>

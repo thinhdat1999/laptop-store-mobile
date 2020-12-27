@@ -10,6 +10,8 @@ import DetailPage from '../../../scenes/Guest/scenes/DetailPage';
 import FullImageScene from '../../../scenes/Guest/scenes/DetailPage/components/ProductImages/scenes/FullImageScene';
 import AllQuestionScene from '../../../scenes/Guest/scenes/DetailPage/components/QuestionBlock/scenes/AllQuestionScene';
 import ReplyScene from '../../../scenes/Guest/scenes/DetailPage/components/QuestionBlock/scenes/ReplyScene';
+import AllRatingScene from '../../../scenes/Guest/scenes/DetailPage/components/RatingBlock/scenes/AllRatingScene';
+import ProductDetailScene from '../../../scenes/Guest/scenes/DetailPage/components/SpecInfo/scenes/ProductDetailScene';
 import AddressPage from '../../../scenes/User/scenes/AddressPage';
 import InfoPage from '../../../scenes/User/scenes/InfoPage';
 import { userApi } from '../../../services/api/userApi';
@@ -55,7 +57,9 @@ const AppRoute = () => {
   const guestScreens = {
     Detail: DetailPage,
     AllQuestion: AllQuestionScene,
+    AllRating: AllRatingScene,
     ReplyScene: ReplyScene,
+    ProductDetail: ProductDetailScene,
   };
 
   const authScreens = {

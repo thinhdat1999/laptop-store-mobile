@@ -4,6 +4,7 @@ import styled from 'styled-components/native'
 const Title = styled.Text`
     width: 25%;
     padding: 10px 5px;
+    color: #aaa;
 `;
 
 

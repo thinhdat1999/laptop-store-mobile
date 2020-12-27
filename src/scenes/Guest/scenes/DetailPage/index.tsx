@@ -11,6 +11,7 @@ import ProductOverviewModel from '../../../../values/models/ProductSummaryModel'
 import ContentBlock from './components/ContentBlock';
 import ProductImages from './components/ProductImages';
 import QuestionBlock from './components/QuestionBlock';
+import RatingBlock from './components/RatingBlock';
 import SpecInfo from './components/SpecInfo';
 import SuggestBlock from './components/SuggestBlock';
 import { SC } from './styles';
@@ -20,6 +21,7 @@ type ProductInfoStates = {
     image_ids: number[],
     productSpec: any,
     suggestions: ProductOverviewModel[],
+    ratings: number[],
     loading: boolean,
 }
 
@@ -35,13 +37,14 @@ const DetailPage = ({ route, navigation }: any) => {
         image_ids: [],
         productSpec: null,
         suggestions: [],
+        ratings: [],
         loading: true,
     })
         , [])
 
     const [state, setState] = useState<ProductInfoStates>(initialState);
 
-    const { image_ids, productSpec, suggestions, loading } = state;
+    const { image_ids, productSpec, suggestions, ratings, loading } = state;
     React.useLayoutEffect(() => {
         navigation.setOptions({
             headerTitle: null,
@@ -60,6 +63,7 @@ const DetailPage = ({ route, navigation }: any) => {
                     image_ids: response.data["image_ids"],
                     productSpec: response.data["spec"],
                     suggestions: response.data["suggestions"],
+                    ratings: response.data["rating_info"],
                     loading: false,
                 }))
         }
@@ -95,6 +99,7 @@ const DetailPage = ({ route, navigation }: any) => {
                     <ContentBlock title="Thông tin cơ bản" component={<SpecInfo key={productId} productSpec={productSpec} />} />
                     <ContentBlock title="Sản phẩm tương tự" component={<SuggestBlock key={productId} suggestions={suggestions} />} />
                     <ContentBlock title="Hỏi đáp về sản phẩm" component={<QuestionBlock key={productId} productId={productId}/>}/>
+                    <ContentBlock title="Khách hàng nhận xét" component={<RatingBlock key={productId} productId={productId} ratingInfo = {ratings} ratingAvg = {productSpec.avg_rating} />}/>
                 </SC.Content>
                 <SC.ActionBar>
                     <SC.OrderButton onPress={() => {

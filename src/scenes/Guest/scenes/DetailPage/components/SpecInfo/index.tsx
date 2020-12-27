@@ -1,14 +1,14 @@
-import { Text, View } from "react-native";
-
-import React, { useMemo, useState } from 'react';
-import CpuModel from "../../../../../../values/models/CpuModel";
-import RamModel from "../../../../../../values/models/RamModel";
-import HardDriveModel from "../../../../../../values/models/HardDriveModel";
-import MonitorModel from "../../../../../../values/models/MonitorModel";
+import { useNavigation } from "@react-navigation/native";
+import React from 'react';
+import { Text } from "react-native";
 import CpuConstants from "../../../../../../values/constants/CpuConstants";
 import ResolutionConstants from "../../../../../../values/constants/ResolutionConstants";
+import CpuModel from "../../../../../../values/models/CpuModel";
+import HardDriveModel from "../../../../../../values/models/HardDriveModel";
+import MonitorModel from "../../../../../../values/models/MonitorModel";
+import RamModel from "../../../../../../values/models/RamModel";
 import { SC } from "./styles";
-import { TouchableOpacity } from "react-native-gesture-handler";
+
 
 type SpecState = {
     cpu: CpuModel,
@@ -19,7 +19,7 @@ type SpecState = {
 
 const SpecInfo = (props: any) => {
     const spec = props.productSpec;
-
+    const navigation = useNavigation();
     const specs = [
         {
             title: "CPU",
@@ -60,7 +60,7 @@ const SpecInfo = (props: any) => {
                     <SC.Content>{item.content}</SC.Content>
                 </SC.InfoRow>
             ))}
-            <SC.NavigateButton onPress={() => { alert("Test") }}>
+            <SC.NavigateButton onPress={() => { navigation.navigate("ProductDetail", {product: spec}) }}>
                 <Text style={{ color: 'red' }}>Xem thông số chi tiết</Text>
             </SC.NavigateButton>
         </SC.Container>

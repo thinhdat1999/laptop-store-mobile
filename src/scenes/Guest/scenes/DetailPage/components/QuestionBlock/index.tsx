@@ -49,7 +49,7 @@ const QuestionBlock = (props: any) => {
     return (
         <SC.Container>
             <SC.AllQuestionButton onPress={() => {
-                navigation.navigate("AllQuestion", { productId: productId });
+                navigation.navigate("AllQuestion", { productId: productId, isFocus: false });
             }}>
                 <SC.AllQuestionButtonTitle>Xem tất cả</SC.AllQuestionButtonTitle>
             </SC.AllQuestionButton>
@@ -63,7 +63,11 @@ const QuestionBlock = (props: any) => {
                 )
                 : null
             }
-            <SC.QuestionButton><SC.QuestionButtonTitle>Đặt Câu Hỏi Cho Sản Phẩm</SC.QuestionButtonTitle></SC.QuestionButton>
+            <SC.QuestionButton onPress={() => {
+                navigation.navigate("AllQuestion", { productId: productId, isFocus: true });
+            }}>
+                <SC.QuestionButtonTitle>Đặt Câu Hỏi Cho Sản Phẩm</SC.QuestionButtonTitle>
+            </SC.QuestionButton>
         </SC.Container>
     );
 }
