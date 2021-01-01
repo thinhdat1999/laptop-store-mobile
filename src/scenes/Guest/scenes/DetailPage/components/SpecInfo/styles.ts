@@ -15,7 +15,7 @@ const Content = styled.Text`
 
 const NavigateButton = styled.TouchableOpacity`
     align-items: center;
-    padding: 10px;
+    padding: 20px;
 `;
 
 const InfoRow = styled.View`

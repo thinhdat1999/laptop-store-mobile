@@ -15,7 +15,7 @@ const RatingItem = (props: any) => {
                     ratingColor='darkorange'
                     ratingBackgroundColor='grey'
                     readonly
-                    imageSize={24}
+                    imageSize={22}
                     //@ts-ignore
                     style={{ paddingVertical: 5, paddingRight: 10 }}
                 />

@@ -22,7 +22,7 @@ const ReplyForm = styled.View`
 `;
 
 const Reply = styled.TextInput`
-    width: 70%;
+    width: 80%;
     height: 40px;
     margin-left: 15px;
     margin-right: 15px;

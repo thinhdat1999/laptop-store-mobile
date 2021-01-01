@@ -6,6 +6,7 @@ const Container = styled.View`
     padding: 0;
     margin: 0 auto;
     justify-content: center;
+    height: 100%;
 `;
 
 const Text = styled.Text`

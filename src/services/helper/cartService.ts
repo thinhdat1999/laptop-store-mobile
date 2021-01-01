@@ -5,6 +5,7 @@ import { userApi } from "../api/userApi";
 import { fireFetching, fireLoading, skipFetching } from "../redux/slices/loaderStatusSlice";
 import { setMessage } from "../redux/slices/messageSlice";
 import store from "../redux/store";
+import tokenHelper from "./tokenHelper";
 
 
 const getCart = async (): Promise<{ [key: number]: number }> => {
@@ -13,28 +14,30 @@ const getCart = async (): Promise<{ [key: number]: number }> => {
 };
 
 const getWishList = async (): Promise<number[]> => {
-    const wishlist =  AsyncStorage.getItem("wish_list");
+    const wishlist = await AsyncStorage.getItem("wish_list");
     return wishlist
         ? // @ts-ignore
         JSON.parse(wishlist)
         : [];
 };
 
-const getTotalQuantity = () => {
-    return Object.values(getCart()).reduce((a, b) => a + b, 0);
+const getTotalQuantity = async () => {
+    const cart = await getCart();
+    return Object.values(cart).reduce((a, b) => a + b, 0);
 };
 
 const syncStorage = async (newCart: { [key: number]: number }) => {
     try {
         const cartJSON = JSON.stringify(newCart);
-        const token = await AsyncStorage.getItem("access_token");
+        // const token = await AsyncStorage.getItem("access_token");
+        const token = await tokenHelper.getToken();
         if (token) {
             await userApi.putCurrentUserCart(cartJSON);
             await new Promise((r) => setTimeout(r, 250));
         } else {
             await new Promise((r) => setTimeout(r, 300));
         }
-        AsyncStorage.setItem("cart", cartJSON);
+        await AsyncStorage.setItem("cart", cartJSON);
     } catch (err) {
         store.dispatch(setMessage(err.response));
     }
@@ -60,8 +63,9 @@ const removeItem = async (itemId: number) => {
     store.dispatch(fireFetching());
 };
 
-const isEmptyCart = () => {
-    return Object.keys(getCart()).length === 0;
+const isEmptyCart = async () => {
+    const cart = await getCart();
+    return Object.keys(cart).length === 0;
 };
 
 const moveItemToWishList = async (itemId: number) => {

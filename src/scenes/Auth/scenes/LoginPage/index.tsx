@@ -26,18 +26,32 @@ const LoginPage = ({ navigation }: any) => {
 
     // }, [navigation])
 
+    const EXPIRE_IN_MINUTES = 15;
+
     React.useLayoutEffect(() => {
         navigation.setOptions({
             headerTitle: "Test",
         })
     }, [])
 
+    const getExpireDate = () => {
+        const now = new Date();
+        let expireTime = new Date(now);
+        expireTime.setMinutes(now.getMinutes() + EXPIRE_IN_MINUTES);
+        return expireTime;
+    }
+
     const submit = useCallback(async (values: LoginFormValues) => {
         try {
             setStatus("Đang xử lí đăng nhập");
             const response = await authApi.postLogin(values);
             try {
-                await AsyncStorage.setItem('access_token', response.headers["x-access-token"]);
+                let access_token = JSON.stringify({
+                    "access_token" : response.headers["x-access-token"],
+                    "expire_at" : getExpireDate(),
+                });
+
+                await AsyncStorage.setItem('access_token', access_token);
                 await AsyncStorage.setItem("refresh_token", response.headers["x-refresh-token"]);
 
                 //login successful

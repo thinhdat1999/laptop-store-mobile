@@ -45,6 +45,12 @@ const OrderText = styled.Text`
     font-size: 16px;
 `;
 
+const LoadingContainer = styled.View`
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+`;
+
 export const SC = {
     Container,
     Text,
@@ -52,4 +58,5 @@ export const SC = {
     ActionBar,
     OrderButton,
     OrderText,
+    LoadingContainer
 };

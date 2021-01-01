@@ -15,7 +15,7 @@ type RatingListState = {
 const RatingList = (props: any) => {
 
     const productId = props.productId;
-
+    const setLoading = props.setLoading;
     const initialState = React.useMemo<RatingListState>(
         () => ({
             loading: true,
@@ -39,6 +39,7 @@ const RatingList = (props: any) => {
                     loading: false,
                     count: count,
                 }));
+                setLoading(loading);
             }
         }
         loadData();

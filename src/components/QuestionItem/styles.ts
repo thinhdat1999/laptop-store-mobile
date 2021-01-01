@@ -14,11 +14,12 @@ const Question = styled.Text`
 const QuestionAuthor = styled.Text`
     color: #bbb;
     font-size: 12px;
+    padding-bottom: 5px;
     font-style: italic;
 `;
 
 const Answer = styled.Text`
-
+    padding-top: 5px;
 `;
 
 const AnswerContainer = styled.View`
@@ -32,6 +33,7 @@ const AnswerAuthor = styled.Text`
     font-size: 12px;
     font-style: italic;
     margin-top: -15px;
+    padding-bottom: 10px;
 `;
 
 

@@ -1,6 +1,7 @@
 import AsyncStorage from "@react-native-community/async-storage";
 import axios from "axios";
 import queryString from "query-string";
+import tokenHelper from "../helper/tokenHelper";
 import { setMessage } from "../redux/slices/messageSlice";
 import store from "../redux/store";
 
@@ -12,7 +13,8 @@ const axiosAuthClient = axios.create({
 
 axiosAuthClient.interceptors.request.use(async (config) => {
     // Handle token here ...
-    const token = await AsyncStorage.getItem("access_token");
+    // const token = await AsyncStorage.getItem("access_token");
+    const token = await tokenHelper.getToken();
     if (token) {
         config.headers.Authorization = `Bearer ${token}`;
     }
@@ -29,16 +31,20 @@ axiosAuthClient.interceptors.response.use(
     },
     async (error) => {
         const originalRequest = error.config;
-        const token = await AsyncStorage.getItem("access_token");
-        if (error.response.status === 401 && !originalRequest.retry) {
+        // const token = await AsyncStorage.getItem("access_token");
+        const token = await tokenHelper.getToken();
+        
+        // if (error.response.status === 401 && !originalRequest.retry) 
+        if (error.response.status === 401) {
             // Token expired
             originalRequest.retry = true;
             const url = "/api/auth/token";
+            const refreshToken = await AsyncStorage.getItem("refresh_token");
             const config = {
                 headers: {
                     Authorization: `Bearer ${token}`,
                     "Content-Type": "application/json",
-                    "x-refresh-token": await AsyncStorage.getItem("refresh_token"),
+                    "x-refresh-token": refreshToken,
                 },
             };
 

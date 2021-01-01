@@ -21,7 +21,7 @@ const RightContainer = styled.View`
     justify-content: center;
 `;
 const RatingAvg = styled.Text`
-    font-size: 40px;
+    font-size: 30px;
 `;
 const RatingQuantity = styled.Text`
     padding-left: 10px;

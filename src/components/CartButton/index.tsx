@@ -1,3 +1,4 @@
+import { useNavigation } from '@react-navigation/native';
 import React, { useCallback, useEffect, useState } from 'react';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { useSelector } from 'react-redux';
@@ -10,6 +11,8 @@ const CartButton = () => {
 
     const [counter, setCounter] = useState<number>(0);
 
+    const navigation = useNavigation();
+
     const updateCounter = async () => {
         const cart = await cartService.getCart();
         setCounter(Object.values(cart).reduce((a, b) => a + b, 0));
@@ -21,9 +24,12 @@ const CartButton = () => {
     }, [loading]);
 
     return (
-        <SC.Container onPress={() => { console.log("test") }}>
+        <SC.Container onPress={() => {
+            navigation.navigate("Cart");
+        }}>
             <Icon name="shopping-cart" size={30} color="#bbb" />
-            <SC.Badge>{counter}</SC.Badge>
+            {counter ?
+                <SC.Badge>{counter}</SC.Badge> : null}
         </SC.Container>
     );
 }

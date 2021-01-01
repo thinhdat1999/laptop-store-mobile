@@ -29,7 +29,6 @@ const UserPage = ({ navigation }: any) => {
     //         if(token !== null) {
     //             try {
     //                 alert("da dang nhap");
-    //                 console.log(token);
     //                 const response = await userApi.getCurrentUserInfo();
     //                 const user: UserModel = response.data;
     //                 dispatch(setUser(user));

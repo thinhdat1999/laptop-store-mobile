@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react';
-import { ActivityIndicator, FlatList, Image } from 'react-native';
+import { ActivityIndicator, FlatList, Image, View } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import laptopApi from '../../../../services/api/laptopApi';
@@ -17,13 +17,13 @@ type ItemListStates = {
 
 const HomePage = ({ navigation, route }: any) => {
     const initialState = useMemo<ItemListStates>(() =>
-        ({
-            page: 1,
-            products: [],
-            loading: true,
-            isDone: false,
-            length: 0,
-        })
+    ({
+        page: 1,
+        products: [],
+        loading: true,
+        isDone: false,
+        length: 0,
+    })
         , [])
 
     const [state, setState] = React.useState<ItemListStates>(initialState);
@@ -86,7 +86,7 @@ const HomePage = ({ navigation, route }: any) => {
                         }))
                     }
                 }}
-                ListFooterComponent={() => loading ? <ActivityIndicator size="large" color="white" /> : null}
+                ListFooterComponent={() => loading ? <ActivityIndicator size="large" color="black" /> : null}
                 renderItem={({ item }) => (
                     <SC.List onPress={() => navigateToDetailScreen(item.id)}>
                         <Image
@@ -99,14 +99,12 @@ const HomePage = ({ navigation, route }: any) => {
                         <SC.Text>{item.name}</SC.Text>
                         <SC.ItemSpec>
                             <SC.ItemRating>
-                                <SC.Text>{item.avg_rating}</SC.Text>
+                                <SC.Text>{item.avg_rating.toFixed(1)}</SC.Text>
                                 <Icon name="star" size={20} />
-                            </SC.ItemRating> {" "}
-                            - RAM {item.ram} - {item.hard_drive}
+                            </SC.ItemRating> - RAM {item.ram} - {item.hard_drive}
                         </SC.ItemSpec>
                         <SC.Text>
-                            <SC.UnitPrice>{formatCurrency(item.unit_price)}đ </SC.UnitPrice>
-                         - <SC.OriginPrice>{formatCurrency(item.discount_price)}</SC.OriginPrice>đ
+                            <SC.UnitPrice>{formatCurrency(item.unit_price)}đ </SC.UnitPrice>- <SC.OriginPrice>{formatCurrency(item.discount_price)}đ</SC.OriginPrice>
                         </SC.Text>
                     </SC.List>
                 )}

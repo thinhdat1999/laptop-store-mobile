@@ -1,5 +1,5 @@
 import React, { useMemo, useState } from 'react';
-import { Text } from 'react-native';
+import { ActivityIndicator, Text } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { useDispatch, useStore } from 'react-redux';
 import CartButton from '../../../../components/CartButton';
@@ -49,7 +49,7 @@ const DetailPage = ({ route, navigation }: any) => {
         navigation.setOptions({
             headerTitle: null,
             headerRight: () => (
-                <CartButton/>
+                <CartButton />
             ),
         })
     }, [navigation])
@@ -69,13 +69,13 @@ const DetailPage = ({ route, navigation }: any) => {
         }
         loadData();
     }, [])
-    
+
 
     const addToCart = async () => {
         // @ts-ignore
         const cart = await cartService.getCart();
         const curItemQuantity = cart?.[productId] ?? 0;
-        const curCartQuantity = cartService.getTotalQuantity();
+        const curCartQuantity = await cartService.getTotalQuantity();
         let message: string | null = null;
 
         if (curItemQuantity + 1 > CartConstants.MAX_QUANTITY_PER_ITEM) {
@@ -84,22 +84,21 @@ const DetailPage = ({ route, navigation }: any) => {
             message = `Tổng số lượng sản phẩm trong giỏ hàng không được vượt quá ${CartConstants.MAX_TOTAL_QUANTITY} sản phẩm (hiện có: ${curCartQuantity})`;
         } else {
             await cartService.addItem(productSpec.id, 1);
-            message = `Đã thêm Laptop ${productSpec.name} vào giỏ hàng (hiện có: ${
-                curItemQuantity + 1
-            })`;
+            message = `Đã thêm Laptop ${productSpec.name} vào giỏ hàng (hiện có: ${curItemQuantity + 1
+                })`;
         }
         store.dispatch(setMessage(message));
     };
 
     return (
-        loading ? <SC.Text>Loading</SC.Text> :
+        loading ? <SC.LoadingContainer><ActivityIndicator size="large" color="black" /></SC.LoadingContainer> :
             <SC.Container>
                 <SC.Content>
                     <ProductImages key={productId} image_ids={image_ids} productSpec={productSpec} />
                     <ContentBlock title="Thông tin cơ bản" component={<SpecInfo key={productId} productSpec={productSpec} />} />
                     <ContentBlock title="Sản phẩm tương tự" component={<SuggestBlock key={productId} suggestions={suggestions} />} />
-                    <ContentBlock title="Hỏi đáp về sản phẩm" component={<QuestionBlock key={productId} productId={productId}/>}/>
-                    <ContentBlock title="Khách hàng nhận xét" component={<RatingBlock key={productId} productId={productId} ratingInfo = {ratings} ratingAvg = {productSpec.avg_rating} />}/>
+                    <ContentBlock title="Hỏi đáp về sản phẩm" component={<QuestionBlock key={productId} productId={productId} />} />
+                    <ContentBlock title="Khách hàng nhận xét" component={<RatingBlock key={productId} productId={productId} ratingInfo={ratings} ratingAvg={productSpec.avg_rating} />} />
                 </SC.Content>
                 <SC.ActionBar>
                     <SC.OrderButton onPress={() => {

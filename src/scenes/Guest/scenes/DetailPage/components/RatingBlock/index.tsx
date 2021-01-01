@@ -1,5 +1,5 @@
 import { useNavigation } from '@react-navigation/native';
-import React from 'react';
+import React, { useState } from 'react';
 import ratingApi from '../../../../../../services/api/ratingApi';
 import RatingModel from '../../../../../../values/models/RatingModel';
 import RatingInfo from './components/RatingInfo';
@@ -17,8 +17,10 @@ const RatingBlock = (props: any) => {
 
     const navigation = useNavigation();
 
+    const [loading, setLoading] = useState(true);
 
     return (
+        loading ?
         <SC.Container>
             <SC.AllRatingButton onPress={() => {
                 navigation.navigate("AllRating", { productId: productId, avg: ratingAvg, info: ratingInfo });
@@ -27,8 +29,8 @@ const RatingBlock = (props: any) => {
             </SC.AllRatingButton>
 
             <RatingInfo key={productId} avg={ratingAvg} info={ratingInfo} />
-            <RatingList productId={productId} />
-        </SC.Container>
+            <RatingList productId={productId} setLoading = {setLoading} />
+        </SC.Container> : null
     );
 }
 

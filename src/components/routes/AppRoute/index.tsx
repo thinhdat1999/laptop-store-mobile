@@ -6,6 +6,7 @@ import { ActivityIndicator } from 'react-native';
 import { useStore } from 'react-redux';
 import LoginPage from '../../../scenes/Auth/scenes/LoginPage';
 import RegisterPage from '../../../scenes/Auth/scenes/RegisterPage';
+import CartScene from '../../../scenes/Guest/scenes/CartScene';
 import DetailPage from '../../../scenes/Guest/scenes/DetailPage';
 import FullImageScene from '../../../scenes/Guest/scenes/DetailPage/components/ProductImages/scenes/FullImageScene';
 import AllQuestionScene from '../../../scenes/Guest/scenes/DetailPage/components/QuestionBlock/scenes/AllQuestionScene';
@@ -15,6 +16,7 @@ import ProductDetailScene from '../../../scenes/Guest/scenes/DetailPage/componen
 import AddressPage from '../../../scenes/User/scenes/AddressPage';
 import InfoPage from '../../../scenes/User/scenes/InfoPage';
 import { userApi } from '../../../services/api/userApi';
+import tokenHelper from '../../../services/helper/tokenHelper';
 import { setUser } from '../../../services/redux/slices/userSlice';
 import UserModel from '../../../values/models/UserModel';
 import MessageBox from '../../MessageBox';
@@ -29,7 +31,7 @@ const AppRoute = () => {
 
   React.useEffect(() => {
     const loadData = async () => {
-      const token = await AsyncStorage.getItem("access_token");
+      const token = await tokenHelper.getToken();
       if (token !== null) {
         try {
           const response = await userApi.getCurrentUserInfo();
@@ -60,6 +62,7 @@ const AppRoute = () => {
     AllRating: AllRatingScene,
     ReplyScene: ReplyScene,
     ProductDetail: ProductDetailScene,
+    Cart: CartScene,
   };
 
   const authScreens = {
