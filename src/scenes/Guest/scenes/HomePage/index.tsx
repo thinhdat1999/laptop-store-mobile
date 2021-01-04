@@ -87,8 +87,8 @@ const HomePage = ({ navigation, route }: any) => {
                     }
                 }}
                 ListFooterComponent={() => loading ? <ActivityIndicator size="large" color="black" /> : null}
-                renderItem={({ item }) => (
-                    <SC.List onPress={() => navigateToDetailScreen(item.id)}>
+                renderItem={({ item, index }) => (
+                    <SC.Item onPress={() => navigateToDetailScreen(item.id)} index={index}>
                         <Image
                             style={{
                                 width: 150,
@@ -99,14 +99,14 @@ const HomePage = ({ navigation, route }: any) => {
                         <SC.Text>{item.name}</SC.Text>
                         <SC.ItemSpec>
                             <SC.ItemRating>
-                                <SC.Text>{item.avg_rating.toFixed(1)}</SC.Text>
-                                <Icon name="star" size={20} />
+                                <SC.Text>{item.avg_rating.toFixed(1)} </SC.Text>
+                                <Icon name="star" size={15} />
                             </SC.ItemRating> - RAM {item.ram} - {item.hard_drive}
                         </SC.ItemSpec>
                         <SC.Text>
-                            <SC.UnitPrice>{formatCurrency(item.unit_price)}đ </SC.UnitPrice>- <SC.OriginPrice>{formatCurrency(item.discount_price)}đ</SC.OriginPrice>
+                            <SC.UnitPrice>{formatCurrency(item.unit_price)}đ</SC.UnitPrice> - <SC.OriginPrice>{formatCurrency(item.discount_price)}đ</SC.OriginPrice>
                         </SC.Text>
-                    </SC.List>
+                    </SC.Item>
                 )}
             />
         </SC.Container>

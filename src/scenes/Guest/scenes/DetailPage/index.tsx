@@ -23,6 +23,7 @@ type ProductInfoStates = {
     suggestions: ProductOverviewModel[],
     ratings: number[],
     loading: boolean,
+    isAdding: boolean,
 }
 
 const DetailPage = ({ route, navigation }: any) => {
@@ -39,12 +40,13 @@ const DetailPage = ({ route, navigation }: any) => {
         suggestions: [],
         ratings: [],
         loading: true,
+        isAdding: false,
     })
         , [])
 
     const [state, setState] = useState<ProductInfoStates>(initialState);
 
-    const { image_ids, productSpec, suggestions, ratings, loading } = state;
+    const { image_ids, productSpec, suggestions, ratings, loading, isAdding } = state;
     React.useLayoutEffect(() => {
         navigation.setOptions({
             headerTitle: null,
@@ -73,6 +75,10 @@ const DetailPage = ({ route, navigation }: any) => {
 
     const addToCart = async () => {
         // @ts-ignore
+        setState((prev) => ({
+            ...prev,
+            isAdding: true,
+        }));
         const cart = await cartService.getCart();
         const curItemQuantity = cart?.[productId] ?? 0;
         const curCartQuantity = await cartService.getTotalQuantity();
@@ -88,6 +94,10 @@ const DetailPage = ({ route, navigation }: any) => {
                 })`;
         }
         store.dispatch(setMessage(message));
+        setState((prev) => ({
+            ...prev,
+            isAdding: false,
+        }));
     };
 
     return (
@@ -101,7 +111,7 @@ const DetailPage = ({ route, navigation }: any) => {
                     <ContentBlock title="Khách hàng nhận xét" component={<RatingBlock key={productId} productId={productId} ratingInfo={ratings} ratingAvg={productSpec.avg_rating} />} />
                 </SC.Content>
                 <SC.ActionBar>
-                    <SC.OrderButton onPress={() => {
+                    <SC.OrderButton disabled={isAdding} onPress={() => {
                         addToCart();
                     }}><SC.OrderText>Chọn mua</SC.OrderText></SC.OrderButton>
                 </SC.ActionBar>

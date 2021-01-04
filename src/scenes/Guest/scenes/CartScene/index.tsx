@@ -9,8 +9,10 @@ import { RootState } from '../../../../services/redux/rootReducer';
 import loaderStatusSlice, { skipFetching } from '../../../../services/redux/slices/loaderStatusSlice';
 import store from '../../../../services/redux/store';
 import ProductOverviewModel from '../../../../values/models/ProductSummaryModel';
+import UserModel from '../../../../values/models/UserModel';
 import CartPaymentProps from '../../../../values/props/CartPaymentProps';
 import CartItem from './components/CartItem';
+import EmptyBlock from './components/EmptyBlock';
 import { SC } from './styles';
 
 type CartPageState = {
@@ -19,7 +21,7 @@ type CartPageState = {
 };
 
 
-const CartScene = ({navigation}: any) => {
+const CartScene = ({ navigation }: any) => {
 
     const initialState: CartPageState = useMemo(
         () => ({
@@ -35,6 +37,7 @@ const CartScene = ({navigation}: any) => {
 
     const [state, setState] = useState<CartPageState>(initialState);
     const loaderStatus = useSelector((state: RootState) => state.loaderStatus);
+    const user = useSelector((state: RootState) => state.user)
     let { items, payment } = state;
 
     useEffect(() => {
@@ -45,6 +48,7 @@ const CartScene = ({navigation}: any) => {
             if (await cartService.isEmptyCart()) {
                 const emptyCartState = { ...initialState, loading: false, items: [] };
                 setState(emptyCartState);
+                console.log("empty");
             } else {
                 const cart = await cartService.getCart();
                 const ids = Object.keys(cart).map((k) => +k);
@@ -86,32 +90,41 @@ const CartScene = ({navigation}: any) => {
         })
     }, [])
 
-    return (
+    const checkout = async () => {
+        user ? navigation.navigate("Checkout", {newAddresses: []}) : navigation.navigate("Login");
+    }
 
+    return (
         <SC.Container>
             {loaderStatus.isLoading ? <SC.Overlay><ActivityIndicator size="large" color="black" /></SC.Overlay> : null}
-                {/* // ? <ActivityIndicator size="large" color="black" /> : null} */}
-            <SC.CartItemList>
-                {items ? items.map((item) => <CartItem key={item.id} item={item} />) : null}
-            </SC.CartItemList>
-            <SC.SummaryContainer>
-                <SC.InfoRow>
-                    <SC.CountTitle>Tổng sản phẩm:</SC.CountTitle>
-                    <SC.TotalCount>{payment.totalCount}</SC.TotalCount>
-                </SC.InfoRow>
-                <SC.InfoRow>
-                    <SC.DiscountTitle>Tổng giảm giá:</SC.DiscountTitle>
-                    <SC.DiscountPrice>{formatCurrency(payment.totalDiscount)}đ</SC.DiscountPrice>
-                </SC.InfoRow>
-                <SC.InfoRow>
-                    <SC.SubTotalTitle>Tạm tính: </SC.SubTotalTitle>
-                    <SC.SubTotalPrice>{formatCurrency(payment.totalPrice)}đ</SC.SubTotalPrice>
-                </SC.InfoRow>
+            {/* // ? <ActivityIndicator size="large" color="black" /> : null} */}
+            {items ? items.length > 0 ? <>
+                <SC.CartItemList>
+                    {items.map((item) => <CartItem key={item.id} item={item} />)}
+                </SC.CartItemList>
+                <SC.SummaryContainer>
+                    <SC.InfoRow>
+                        <SC.CountTitle>Tổng sản phẩm:</SC.CountTitle>
+                        <SC.TotalCount>{payment.totalCount}</SC.TotalCount>
+                    </SC.InfoRow>
+                    <SC.InfoRow>
+                        <SC.DiscountTitle>Tổng giảm giá:</SC.DiscountTitle>
+                        <SC.DiscountPrice>{formatCurrency(payment.totalDiscount)}đ</SC.DiscountPrice>
+                    </SC.InfoRow>
+                    <SC.InfoRow>
+                        <SC.SubTotalTitle>Tạm tính: </SC.SubTotalTitle>
+                        <SC.SubTotalPrice>{formatCurrency(payment.totalPrice)}đ</SC.SubTotalPrice>
+                    </SC.InfoRow>
 
-                <SC.CheckoutButton>
-                    <SC.CheckoutButtonTitle>Tiến hành đặt hàng</SC.CheckoutButtonTitle>
-                </SC.CheckoutButton>
-            </SC.SummaryContainer>
+                    <SC.CheckoutButton onPress={checkout}>
+                        <SC.CheckoutButtonTitle>Tiến hành đặt hàng</SC.CheckoutButtonTitle>
+                    </SC.CheckoutButton>
+                </SC.SummaryContainer>
+            </>
+                :
+                <EmptyBlock /> : <ActivityIndicator size="large" color="black" />
+            }
+
         </SC.Container>
     );
 

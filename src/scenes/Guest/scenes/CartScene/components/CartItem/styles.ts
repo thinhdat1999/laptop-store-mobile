@@ -1,25 +1,31 @@
 import styled from 'styled-components/native';
 
 const Container = styled.View`
-    align-items: flex-start;
+    align-items: center;
+    justify-content: center;
+
     display: flex;
     flex-direction: row;
     background-color: white;
     margin-bottom: 10px;
+    padding: 0px 10px;
 `;
 
 const LeftContainer = styled.View`
-    width: 32%;
+    width: 25%;
     align-items: center;
+    justify-content: center;
 `;
 
 const RightContainer = styled.View`
-    width: 68%;
+    width: 75%;
     padding: 10px;
-    
+    margin-top: 5px;
 `;
+
 const ItemName = styled.Text`
-    width: 90%;
+
+    width: 85%;
     font-weight: bold;
     color: #3B5998;
     padding-left: 10px;
@@ -36,14 +42,12 @@ const UnitPrice = styled.Text`
     color: #bf081f;
     font-weight: bold;
     margin-right: 10px;
-    text-decoration: underline;
 `;
 
 const OriginPrice = styled.Text`
     text-decoration: line-through;
     font-size: 13px;
     color: #777;
-    text-decoration: line-through;
     font-weight: bold;
 `;
 
@@ -51,6 +55,8 @@ const Price = styled.Text`
     padding-left: 10px;
 `;
 
+const WishlistButton = styled.TouchableOpacity`
+`;
 
 export const SC = {
     Container,
@@ -60,5 +66,6 @@ export const SC = {
     RemoveButton,
     UnitPrice,
     OriginPrice,
-    Price
+    Price,
+    WishlistButton,
 }

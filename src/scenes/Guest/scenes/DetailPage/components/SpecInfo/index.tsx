@@ -61,7 +61,7 @@ const SpecInfo = (props: any) => {
                 </SC.InfoRow>
             ))}
             <SC.NavigateButton onPress={() => { navigation.navigate("ProductDetail", {product: spec}) }}>
-                <Text style={{ color: 'red', fontWeight: 'bold' }}>Xem thông số chi tiết</Text>
+                <Text style={{ color: "rgb(40, 138, 214)", fontWeight: 'bold' }}>Xem thông số chi tiết</Text>
             </SC.NavigateButton>
         </SC.Container>
     );

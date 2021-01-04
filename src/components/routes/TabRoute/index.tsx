@@ -22,10 +22,14 @@ const TabRoute = ({ navigation, route }: any) => {
           ),
           headerTitle: () => (
             <SC.Filter onPress={() => {alert("test")}} >
-              <SC.SearchIcon name="search" size={25} color="#bbb" />
+              <SC.SearchIcon name="search" size={20} color="#bbb" />
               <Text style={{ flex: 12 }}> Type something...</Text>
             </SC.Filter>
           ),
+          headerTitleStyle: {
+            justifyContent: "center",
+            alignItems: "center",
+          }
         }
       case "UserPage":
         return {

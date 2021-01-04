@@ -30,7 +30,10 @@ const LoginPage = ({ navigation }: any) => {
 
     React.useLayoutEffect(() => {
         navigation.setOptions({
-            headerTitle: "Test",
+            headerTitle: "Đăng nhập",
+            // headerTitleStyle: {color: "white"},
+            // headerLeftStyle: {color: "white"},
+            // headerStyle: {backgroundColor: "grey",}
         })
     }, [])
 
@@ -47,8 +50,8 @@ const LoginPage = ({ navigation }: any) => {
             const response = await authApi.postLogin(values);
             try {
                 let access_token = JSON.stringify({
-                    "access_token" : response.headers["x-access-token"],
-                    "expire_at" : getExpireDate(),
+                    "access_token": response.headers["x-access-token"],
+                    "expire_at": getExpireDate(),
                 });
 
                 await AsyncStorage.setItem('access_token', access_token);
@@ -78,7 +81,7 @@ const LoginPage = ({ navigation }: any) => {
             // createCookie("access_token", response.headers["x-access-token"]);
 
             setStatus("Đăng nhập thành công");
-            navigation.navigate("UserPage");
+            navigation.goBack();
         } catch (err) {
             setStatus(err.response.data);
         }
@@ -100,24 +103,32 @@ const LoginPage = ({ navigation }: any) => {
         <Formik initialValues={initialValues} onSubmit={submit}>
             {({ handleChange, handleSubmit, values }) => (
                 <SC.Container>
-                    <SC.Header>Login</SC.Header>
+                    <SC.Header>Welcome!</SC.Header>
+                    <SC.SubText>Đăng nhập bằng tài khoản bạn đã đăng kí trước đó.</SC.SubText>
 
+                    <SC.InputTitle>Tài khoản</SC.InputTitle>
                     <SC.TextInput
                         onChangeText={handleChange('username')}
-                        placeholder="Username..."
+                        placeholder="Tên đăng nhập..."
                         value={values.username}
                     />
 
+                    <SC.InputTitle>Mật khẩu</SC.InputTitle>
                     <SC.TextInput
                         secureTextEntry={true}
                         onChangeText={handleChange('password')}
-                        placeholder="Password..."
+                        placeholder="Mật khẩu..."
                         value={values.password}
                     />
 
-                    <SC.Button onPress={handleSubmit} title="Đăng nhập" />
+                    <SC.Button onPress={handleSubmit}><SC.ButtonTitle>Đăng nhập</SC.ButtonTitle></SC.Button>
 
                     {status ? <SC.Status>{status}</SC.Status> : null}
+                    <SC.SignUpContainer>
+                        <SC.SignUpText>Chưa có tài khoản? </SC.SignUpText>
+                        <SC.Link><SC.LinkTitle>Đăng kí ngay.</SC.LinkTitle></SC.Link>
+                    </SC.SignUpContainer>
+
                 </SC.Container>
             )}
         </Formik>

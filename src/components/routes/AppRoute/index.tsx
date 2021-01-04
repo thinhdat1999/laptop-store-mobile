@@ -14,6 +14,8 @@ import ReplyScene from '../../../scenes/Guest/scenes/DetailPage/components/Quest
 import AllRatingScene from '../../../scenes/Guest/scenes/DetailPage/components/RatingBlock/scenes/AllRatingScene';
 import ProductDetailScene from '../../../scenes/Guest/scenes/DetailPage/components/SpecInfo/scenes/ProductDetailScene';
 import AddressPage from '../../../scenes/User/scenes/AddressPage';
+import CheckoutScene from '../../../scenes/User/scenes/CheckoutScene';
+import ReceiverAddressScene from '../../../scenes/User/scenes/CheckoutScene/scenes/ReceiverAddressScene';
 import InfoPage from '../../../scenes/User/scenes/InfoPage';
 import { userApi } from '../../../services/api/userApi';
 import tokenHelper from '../../../services/helper/tokenHelper';
@@ -31,6 +33,7 @@ const AppRoute = () => {
 
   React.useEffect(() => {
     const loadData = async () => {
+      console.log("load user");
       const token = await tokenHelper.getToken();
       if (token !== null) {
         try {
@@ -73,6 +76,8 @@ const AppRoute = () => {
   const userScreens = {
     Info: InfoPage,
     Address: AddressPage,
+    Checkout: CheckoutScene,
+    ReceiverAddress: ReceiverAddressScene,
   };
 
   return (

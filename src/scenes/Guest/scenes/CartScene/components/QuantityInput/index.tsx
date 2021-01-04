@@ -1,5 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import AsyncStorage from '@react-native-community/async-storage';
+import { useNavigation } from '@react-navigation/native';
+import React, { useCallback, useEffect, useState } from 'react';
+import Icon from 'react-native-vector-icons/MaterialIcons';
 import cartService from '../../../../../../services/helper/cartService';
+import tokenHelper from '../../../../../../services/helper/tokenHelper';
 import { fireFetching, fireLoading } from '../../../../../../services/redux/slices/loaderStatusSlice';
 import { setMessage } from '../../../../../../services/redux/slices/messageSlice';
 import store from '../../../../../../services/redux/store';
@@ -23,6 +27,9 @@ const QuantityInput = (props: any) => {
     }
     const [state, setState] = useState<QuantityProps>(initialState);
     const { quantity, item, value, favorite } = state;
+
+    const navigation = useNavigation();
+
 
     useEffect(() => {
         const syncData = async () => {
@@ -133,6 +140,15 @@ const QuantityInput = (props: any) => {
         }
     }
 
+    const moveItemToWishList = useCallback( async () => {
+        const token = await tokenHelper.getToken();
+        if (token) {
+            cartService.moveItemToWishList(item.id);
+        } else {
+            navigation.navigate("Login");
+        }
+    }, []);
+
     return (
         <SC.Container>
             <SC.QuantityInputContainer>
@@ -145,12 +161,12 @@ const QuantityInput = (props: any) => {
                 </SC.IncreaseButton>
             </SC.QuantityInputContainer>
 
-            {/* <SC.WishlistButton onPress={changeFavorite}>
-                {favorite
+            <SC.WishlistButton onPress={moveItemToWishList}>
+                {/* {favorite
                     ? <Icon name="favorite" size={25} color="red" />
-                    : <Icon name="favorite-border" size={25} color="grey" />}
-
-            </SC.WishlistButton> */}
+                    : <Icon name="favorite-border" size={25} color="grey" />} */}
+                <SC.WishlistButtonTitle>Mua sau</SC.WishlistButtonTitle>
+            </SC.WishlistButton>
         </SC.Container>
     );
 }

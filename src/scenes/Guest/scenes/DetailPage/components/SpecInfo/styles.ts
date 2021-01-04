@@ -4,7 +4,7 @@ import styled from 'styled-components/native'
 const Title = styled.Text`
     width: 25%;
     padding: 10px 5px;
-    color: #aaa;
+    color: grey;
 `;
 
 
@@ -22,10 +22,12 @@ const InfoRow = styled.View`
     display: flex;
     flex-direction: row;
 
-    ${({isEven}) => !isEven && ` 
+    /* ${({isEven}) => !isEven && ` 
       background-color: #eee;
-    `}
-    padding: 15px;
+    `} */
+    border-bottom-color: #eee;
+    border-bottom-width: 1px;
+    padding: 10px 15px;
 `;
 
 const Container = styled.View`

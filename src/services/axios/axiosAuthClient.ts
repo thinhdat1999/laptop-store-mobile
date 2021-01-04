@@ -33,6 +33,7 @@ axiosAuthClient.interceptors.response.use(
         const originalRequest = error.config;
         // const token = await AsyncStorage.getItem("access_token");
         const token = await tokenHelper.getToken();
+        console.log(token);
         
         // if (error.response.status === 401 && !originalRequest.retry) 
         if (error.response.status === 401) {

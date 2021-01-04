@@ -1,7 +1,7 @@
 import styled from 'styled-components/native'
 
 const Container = styled.View`
-    
+    flex: 1;
 `;
 
 const CartItemList = styled.ScrollView`
@@ -10,7 +10,7 @@ const CartItemList = styled.ScrollView`
 
 const SummaryContainer = styled.View`
     background-color: white;
-    height: 25%;
+    height: 20%;
 `;
 
 const InfoRow = styled.View`

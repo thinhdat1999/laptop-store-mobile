@@ -17,24 +17,31 @@ const Text = styled.Text`
 const ItemSpec = styled.Text`
     display: flex;
     font-weight: 600;
+    font-size: 12px;
     color: #bbb;
     width: 100%;
 `;
 
 const ItemRating = styled.Text`
     color: darkorange;
+    font-size: 14px;
 `;
 const Button = styled.Button``
 
-const List = styled.TouchableOpacity`
+const Item = styled.TouchableOpacity`
     display: flex;
     align-items: center;
-    max-width: 48%;
+    max-width: 50%;
     border: solid 1px #eee;
     background-color: white;
-    padding: 20px 3%;
-    border-radius: 10px;
-    margin: 20px 1%;
+    padding: -5px 3% 10px 3%;
+    margin: 1.5px;
+
+    /* border-bottom-right-radius: ${props => props.index % 2 === 0 ? 10: 0 }px;
+    border-top-right-radius: ${props => props.index % 2 === 0 && props.index !== 0 ? 10: 0 }px;
+
+    border-top-left-radius: ${props => props.index % 2 !== 0 && props.index !== 1 ? 10: 0 }px;
+    border-bottom-left-radius: ${props => props.index % 2 !== 0 ? 10: 0 }px; */
 `;
 
 const UnitPrice = styled.Text`
@@ -63,7 +70,7 @@ export const SC = {
     LoaderContainer,
     Text,
     Button,
-    List,
+    Item,
     ItemSpec,
     ItemRating,
     OriginPrice,
