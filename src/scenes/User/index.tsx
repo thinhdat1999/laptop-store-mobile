@@ -53,6 +53,7 @@ const UserPage = ({ navigation }: any) => {
             <SC.Text>User Page</SC.Text>
             <SC.Button title="Go to Info" onPress={() => redirect("Info")}></SC.Button>
             <SC.Button title="Go to Address" onPress={() => redirect("Address")}></SC.Button>
+            <SC.Button title="Go to Order" onPress={() => redirect("Order")}></SC.Button>
         </SC.Container>
     );
 }

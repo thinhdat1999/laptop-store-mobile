@@ -56,7 +56,7 @@ const CheckoutScene = ({ navigation, route }: any) => {
             ]);
 
             if (checkoutResponse.data.laptop_count === 0) {
-                navigation.push("/cart");
+                navigation.navigate("Cart");
                 return;
             }
 
@@ -96,6 +96,7 @@ const CheckoutScene = ({ navigation, route }: any) => {
             console.log(addressId);
             const response = await orderApi.postOrder(addressId);
             const orderId = response.data;
+            navigation.navigate("OrderDetail", {orderId: orderId});
             // Navigate sang trang track order
         } catch (err) {
             setSubmitting(false);

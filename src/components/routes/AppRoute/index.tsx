@@ -17,6 +17,8 @@ import AddressPage from '../../../scenes/User/scenes/AddressPage';
 import CheckoutScene from '../../../scenes/User/scenes/CheckoutScene';
 import ReceiverAddressScene from '../../../scenes/User/scenes/CheckoutScene/scenes/ReceiverAddressScene';
 import InfoPage from '../../../scenes/User/scenes/InfoPage';
+import OrderDetailScene from '../../../scenes/User/scenes/OrderDetailScene';
+import OrderScene from '../../../scenes/User/scenes/OrderScene';
 import { userApi } from '../../../services/api/userApi';
 import tokenHelper from '../../../services/helper/tokenHelper';
 import { setUser } from '../../../services/redux/slices/userSlice';
@@ -78,6 +80,8 @@ const AppRoute = () => {
     Address: AddressPage,
     Checkout: CheckoutScene,
     ReceiverAddress: ReceiverAddressScene,
+    Order: OrderScene,
+    OrderDetail: OrderDetailScene,
   };
 
   return (
