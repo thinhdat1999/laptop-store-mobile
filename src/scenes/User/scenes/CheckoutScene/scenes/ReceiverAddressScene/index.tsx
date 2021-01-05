@@ -1,26 +1,66 @@
 import React from 'react';
+import { View } from 'react-native';
+import { userApi } from '../../../../../../services/api/userApi';
 import AddressModel from '../../../../../../values/models/AddressModel';
 import { SC } from './styles';
 
+
+type ReceiverAddressState = {
+    addressList: AddressModel[],
+    curAddress: AddressModel,
+}
 const ReceiverAddressScene = ({ navigation, route }: any) => {
+    React.useLayoutEffect(() => {
+        navigation.setOptions({
+            headerTitle: "Địa chỉ nhận hàng",
+            // headerTitleStyle: {textAlign: 'center'},
+        })
+    }, [])
+
     const { addresses, choosen } = route.params;
 
-    const [curAddress, setAddress] = React.useState(choosen);
+    const initialState: ReceiverAddressState = {
+        addressList: addresses,
+        curAddress: choosen,
+    }
 
+    const [state, setState] = React.useState<ReceiverAddressState>(initialState);
+    const { addressList, curAddress } = state;
     const changeCurrentAddress = (address: AddressModel) => {
-        setAddress(address);
+        setState((prev) => ({
+            ...prev,
+            curAddress: address,
+        }));
     }
 
     const setReceiverAddress = () => {
-        addresses.splice(addresses.indexOf(curAddress), 1);
-        addresses.unshift(curAddress);
-        navigation.navigate("Checkout", {newAddresses : addresses});
+        addressList.splice(addressList.indexOf(curAddress), 1);
+        addressList.unshift(curAddress);
+        navigation.navigate("Checkout", { newAddresses: addressList });
     }
+
+
+    const loadData = async () => {
+        const response = await userApi.getCurrentUserAddresses();
+        setState((prev) => ({
+            ...prev,
+            addressList: response.data,
+        }));
+    }
+    React.useEffect(() => {
+        const unsubscribe = navigation.addListener('focus', () => {
+            loadData();
+        });
+
+        // Return the function to unsubscribe from the event so it gets removed on unmount
+        return unsubscribe;
+    }, [navigation]);
+
     return (
         <SC.Container>
             <SC.AddressList>
-                {addresses.map((address: any) => (
-                    <SC.AddressItem final={addresses.indexOf(address) === addresses.length - 1} key ={address.id}>
+                {addressList.map((address: any) => (
+                    <SC.AddressItem final={addressList.indexOf(address) === addressList.length - 1} key={address.id}>
                         <SC.LeftContainer>
                             <SC.Picker onPress={() => changeCurrentAddress(address)}>
                                 <SC.PickerOuter>
@@ -36,6 +76,13 @@ const ReceiverAddressScene = ({ navigation, route }: any) => {
                         </SC.RightContainer>
                     </SC.AddressItem>
                 ))}
+                <SC.NewAddressContainer>
+                    <SC.NewAddressButton onPress={() => {
+                        navigation.navigate("CreateAddress", { addressId: null });
+                    }}>
+                        <SC.NewAddressButtonTitle>Thêm địa chỉ mới</SC.NewAddressButtonTitle>
+                    </SC.NewAddressButton>
+                </SC.NewAddressContainer>
             </SC.AddressList>
             <SC.ActionBar>
                 <SC.Button onPress={setReceiverAddress}>

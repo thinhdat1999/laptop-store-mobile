@@ -76,6 +76,21 @@ const Button = styled.TouchableOpacity`
     background-color: red;
     border-radius: 5px;
 `;
+const NewAddressButton = styled.TouchableOpacity`
+    height: 40px;
+    width: 100%;
+    justify-content: center;
+`;
+
+const NewAddressContainer = styled.View`
+    margin-top: 10px;
+    padding: 15px;
+    background-color: white;
+`;
+const NewAddressButtonTitle = styled.Text`
+    font-weight: bold;
+    color: blue;
+`;
 
 const ButtonTitle = styled.Text`
     font-weight: bold;
@@ -96,5 +111,8 @@ export const SC = {
     AddressList,
     ActionBar,
     Button,
-    ButtonTitle
+    ButtonTitle,
+    NewAddressContainer,
+    NewAddressButton,
+    NewAddressButtonTitle
 }

@@ -5,6 +5,7 @@ import { useDispatch } from 'react-redux';
 import { authApi } from '../../../../services/api/authApi';
 import { userApi } from '../../../../services/api/userApi';
 import { setUser } from '../../../../services/redux/slices/userSlice';
+import { setWishList } from '../../../../services/redux/slices/wishListSlice';
 import LoginFormValues from '../../../../values/forms/LoginFormValues';
 import UserModel from '../../../../values/models/UserModel';
 import { SC } from './styles';
@@ -69,7 +70,7 @@ const LoginPage = ({ navigation }: any) => {
                         const cart = await AsyncStorage?.getItem("cart") ?? "{}";
                         await userApi.putCurrentUserCart(cart);
                     }
-                    // store.dispatch(setWishList(JSON.parse(user?.wish_list ?? "[]")));
+                    dispatch(setWishList(JSON.parse(user?.wish_list ?? "[]")));
                 } catch (err) {
                     AsyncStorage.removeItem("access_token");
                     AsyncStorage.removeItem("refresh_token");

@@ -49,7 +49,6 @@ const OrderScene = ({ navigation }: any) => {
             // @ts-ignore
             const response = await userApi.getCurrentUserOrders(page);
             const newOrders = [...orders, ...response.data];
-            console.log(newOrders);
             const length = parseInt(response.headers["x-total-count"]);
             setState((prev) => ({
                 ...prev,

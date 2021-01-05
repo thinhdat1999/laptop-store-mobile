@@ -1,17 +1,25 @@
 import React, { useCallback, useEffect } from 'react';
-import Icon from 'react-native-vector-icons/MaterialIcons';
-import MaterialIcon from 'react-native-vector-icons/MaterialCommunityIcons';
+import { ActivityIndicator, Alert } from 'react-native';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
+import MaterialIcon from 'react-native-vector-icons/MaterialCommunityIcons';
+import Icon from 'react-native-vector-icons/MaterialIcons';
 import { useDispatch, useSelector } from 'react-redux';
 import orderApi from '../../../../services/api/orderApi';
 import { formatCurrency } from '../../../../services/helper/currency';
 import { RootState } from '../../../../services/redux/rootReducer';
-import { fireFetching, skipFetching } from '../../../../services/redux/slices/loaderStatusSlice';
-import { fetchOrderById } from '../../../../services/redux/slices/orderSlice';
-import { SC } from './styles';
-import OrderTrack from './components/OrderTrack';
+import { fireFetching, fireLoading, skipFetching, skipLoading } from '../../../../services/redux/slices/loaderStatusSlice';
+import OrderDetailModel from '../../../../values/models/OrderDetailModel';
+import OrderItemModel from '../../../../values/models/OrderItemModel';
 import OrderItem from './components/OrderItem';
-import { ActivityIndicator, Alert, Text, View } from 'react-native';
+import OrderTrack from './components/OrderTrack';
+import { SC } from './styles';
+
+type OrderDetailProps = {
+    order: OrderDetailModel | null,
+    laptops: OrderItemModel[],
+    promotions: OrderItemModel[],
+};
+
 const OrderDetailScene = ({ navigation, route }: any) => {
 
     React.useLayoutEffect(() => {
@@ -25,27 +33,32 @@ const OrderDetailScene = ({ navigation, route }: any) => {
 
     const dispatch = useDispatch();
     const loading = useSelector((state: RootState) => state.loaderStatus.isLoading);
-    const order = useSelector((state: RootState) => state.order);
-    const laptops = order?.items.filter((i) => i.type === "LAPTOP");
-    const promotions = order?.items.filter((i) => i.type === "PROMOTION");
+
+    const initialState = React.useMemo<OrderDetailProps>(() => ({
+        order: null,
+        laptops: [],
+        promotions: [],
+    }), []);
+
+    const [state, setState] = React.useState(initialState);
+
+    const { order, laptops, promotions } = state;
 
     const loadData = async () => {
-        dispatch(fireFetching());
-        await dispatch(fetchOrderById(parseInt(orderId)));
-        dispatch(skipFetching());
+        dispatch(fireLoading());
+        const response = await orderApi.getById(parseInt(orderId));
+        setState((prev) => ({
+            ...prev,
+            order: response.data,
+            laptops: response.data?.items.filter((i: any) => i.type === "LAPTOP"),
+            promotions: response.data?.items.filter((i: any) => i.type === "PROMOTION")
+        }))
+        dispatch(skipLoading());
+        // dispatch(skipFetching());
     };
 
     useEffect(() => {
         loadData();
-    }, []);
-
-    const cancelOrder = useCallback(async () => {
-        openConfirmDialog();
-        // let confirmCancel = false;
-        // const confirmCancel = openConfirmDialog();
-        // if (confirmCancel) {
-        //     await orderApi.postCancelOrder(parseInt(orderId));
-        // }
     }, []);
 
     const openConfirmDialog = () => (
@@ -66,7 +79,8 @@ const OrderDetailScene = ({ navigation, route }: any) => {
                 }
             ],
             { cancelable: false }
-        ));
+        )
+    );
 
     return loading || !order ? <ActivityIndicator size="large" color="black" /> : (
         <SC.Container>
@@ -106,7 +120,7 @@ const OrderDetailScene = ({ navigation, route }: any) => {
                             <SC.SectionTitle>Theo Dõi Đơn Hàng</SC.SectionTitle>
                         </SC.SectionHeader>
                         {order.tracks.map((track, index) => (
-                            <OrderTrack track={track} step={order.tracks.length - index} key={index}/>
+                            <OrderTrack track={track} step={order.tracks.length - index} key={index} />
                         ))}
                     </SC.RightContainer>
                 </SC.SectionContainer>

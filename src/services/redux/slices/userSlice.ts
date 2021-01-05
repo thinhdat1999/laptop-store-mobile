@@ -24,6 +24,9 @@ const userSlice = createSlice({
             return { ...userProps };
         },
         setDefaultAddressId(state, action: PayloadAction<number>) {
+            if (action.payload === null) {
+                return null;
+            }
             if (state !== null) {
                 return { ...state, address_id: action.payload };
             }

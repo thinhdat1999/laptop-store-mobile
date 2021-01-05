@@ -1,10 +1,16 @@
+import AsyncStorage from '@react-native-community/async-storage';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { ActivityIndicator, Text } from 'react-native';
+import { useDispatch } from 'react-redux';
 import orderApi from '../../../../services/api/orderApi';
 import { userApi } from '../../../../services/api/userApi';
 import { formatCurrency } from '../../../../services/helper/currency';
+import tokenHelper from '../../../../services/helper/tokenHelper';
+import { setUser } from '../../../../services/redux/slices/userSlice';
+import { setWishList } from '../../../../services/redux/slices/wishListSlice';
 import AddressModel from '../../../../values/models/AddressModel';
 import OrderCheckoutModel from '../../../../values/models/OrderCheckoutModel';
+import UserModel from '../../../../values/models/UserModel';
 import CheckoutItem from './components/CheckoutItem';
 import DeliveryAddress from './components/DeliveryAddress';
 import { SC } from './styles';
@@ -17,6 +23,8 @@ type CheckoutPageState = {
 const CheckoutScene = ({ navigation, route }: any) => {
 
     const { newAddresses } = route.params;
+
+    const dispatch = useDispatch();
 
     React.useLayoutEffect(() => {
         navigation.setOptions({
@@ -70,7 +78,7 @@ const CheckoutScene = ({ navigation, route }: any) => {
     }, []);
 
     useEffect(() => {
-        if(newAddresses && newAddresses[0]?.id !== addresses[0]?.id) {
+        if (newAddresses && newAddresses[0]?.id !== addresses[0]?.id) {
             setState((prev) => ({
                 ...prev,
                 addresses: newAddresses,
@@ -78,25 +86,53 @@ const CheckoutScene = ({ navigation, route }: any) => {
         }
     }, [newAddresses])
 
-    const addAddress = useCallback(() => {
-        //navigate to create addrress scene
-        // navigation.navigate("CreateAddress");
-    }, []);
+    const loadData = async () => {
+        const token = await tokenHelper.getToken();
+        if (token !== null) {
+            try {
+                const response = await userApi.getCurrentUserInfo();
+                const user: UserModel = response.data;
+                dispatch(setUser(user));
 
-    const editAddress = useCallback(() => {
-        // @ts-ignore
-        //get addressID and go to edit scene
-    }, []);
+                if (user.cart) {
+                    await AsyncStorage.setItem("cart", user.cart);
+                } else {
+                    const cart = await AsyncStorage?.getItem("cart") ?? "{}";
+                    await userApi.putCurrentUserCart(cart);
+                }
+                dispatch(setWishList(JSON.parse(user?.wish_list ?? "[]")));
+            } catch (err) {
+                AsyncStorage.removeItem("access_token");
+                AsyncStorage.removeItem("refresh_token");
+                throw err;
+            }
+        }
+    }
 
     const submitCheckout = useCallback(async () => {
         setSubmitting(true);
         try {
             // @ts-ignore
             const addressId = addresses[0].id;
-            console.log(addressId);
             const response = await orderApi.postOrder(addressId);
             const orderId = response.data;
-            navigation.navigate("OrderDetail", {orderId: orderId});
+            // navigation.navigate("OrderDetail", { orderId: orderId });
+            await loadData();
+            navigation.reset({
+                index: 1,
+                key: null,
+                routes: [
+                    {
+                        key: null,
+                        name: 'Home'
+                    },
+                    {
+                        key: null,
+                        name: 'OrderDetail',
+                        params: { orderId: orderId },
+                    },
+                ],
+            })
             // Navigate sang trang track order
         } catch (err) {
             setSubmitting(false);

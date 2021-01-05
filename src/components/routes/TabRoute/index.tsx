@@ -33,8 +33,10 @@ const TabRoute = ({ navigation, route }: any) => {
         }
       case "UserPage":
         return {
-          headerTitle: "User",
-          headerRight: null,
+          headerTitle: "Cá nhân",
+          headerRight: () => (
+            <CartButton/>
+          ),
         };
     }
   }

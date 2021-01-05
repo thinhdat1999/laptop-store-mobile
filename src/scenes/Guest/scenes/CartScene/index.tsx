@@ -48,7 +48,6 @@ const CartScene = ({ navigation }: any) => {
             if (await cartService.isEmptyCart()) {
                 const emptyCartState = { ...initialState, loading: false, items: [] };
                 setState(emptyCartState);
-                console.log("empty");
             } else {
                 const cart = await cartService.getCart();
                 const ids = Object.keys(cart).map((k) => +k);

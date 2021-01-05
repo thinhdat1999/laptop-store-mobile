@@ -10,7 +10,6 @@ type DeliveryAddressProps = {
 
 const DeliveryAddress = ({ addresses }: DeliveryAddressProps) => {
     const navigation = useNavigation();
-    console.log(addresses);
     return (
         <SC.Container>
             {addresses.length === 0 ? (
