@@ -273,26 +273,29 @@ const InfoPage = ({ navigation }: any) => {
 
                 <SC.InputContainer>
                     <SC.InputTitle>Giới tính</SC.InputTitle>
-                    <Picker
-                        selectedValue={gender}
-                        onValueChange={(itemValue, itemIndex) => {
-                            setState((prev) => ({
-                                ...prev,
-                                defaultValues: {
-                                    ...prev.defaultValues,
-                                    gender: itemValue.toString(),
-                                },
-                                validations: {
-                                    ...prev.validations,
-                                    isValidGender: null,
-                                }
-                            }));
-                        }}
-                    >
-                        <Picker.Item label="Nam" value="MALE" />
-                        <Picker.Item label="Nữ" value="FEMALE" />
-                        <Picker.Item label="Khác" value="OTHER" />
-                    </Picker>
+                    <SC.PickerContainer>
+                        <Picker
+                            selectedValue={gender}
+                            onValueChange={(itemValue, itemIndex) => {
+                                setState((prev) => ({
+                                    ...prev,
+                                    defaultValues: {
+                                        ...prev.defaultValues,
+                                        gender: itemValue.toString(),
+                                    },
+                                    validations: {
+                                        ...prev.validations,
+                                        isValidGender: null,
+                                    }
+                                }));
+                            }}
+                        >
+                            <Picker.Item label="Nam" value="MALE" />
+                            <Picker.Item label="Nữ" value="FEMALE" />
+                            <Picker.Item label="Khác" value="OTHER" />
+                        </Picker>
+                    </SC.PickerContainer>
+
                     {validations.isValidGender && isChecked ?
                         <SC.ValidationContainer>
                             <SC.ValidationText>{validations.isValidGender}</SC.ValidationText>

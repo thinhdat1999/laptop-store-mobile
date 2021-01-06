@@ -3,6 +3,8 @@ import { getFocusedRouteNameFromRoute } from "@react-navigation/native";
 import React from 'react';
 import { Text } from "react-native";
 import Icon from 'react-native-vector-icons/FontAwesome5';
+import Entypo from 'react-native-vector-icons/Entypo';
+import AntDesign from 'react-native-vector-icons/AntDesign';
 import HomePage from "../../../scenes/Guest/scenes/HomePage";
 import UserPage from "../../../scenes/User";
 import CartButton from "../../CartButton";
@@ -46,9 +48,18 @@ const TabRoute = ({ navigation, route }: any) => {
   }, [navigation, route]);
 
   return (
-    <Tab.Navigator>
-      <Tab.Screen name="Home" component={HomePage} />
-      <Tab.Screen name="UserPage" component={UserPage} />
+    <Tab.Navigator tabBarOptions={{
+      inactiveTintColor: "#e2dada",
+      activeTintColor: "#000",
+    }}>
+      <Tab.Screen name="Home" component={HomePage} options={{
+        tabBarLabel: "Trang chủ",
+        tabBarIcon: () => <Entypo name="home" color="black" size={20}/>,
+      }}/>
+      <Tab.Screen name="UserPage" component={UserPage} options={{
+        tabBarLabel: "Cá nhân",
+        tabBarIcon: () => <AntDesign name="user" color="black" size={20}/>,
+      }} />
     </Tab.Navigator>
   );
 }

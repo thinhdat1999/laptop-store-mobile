@@ -127,7 +127,7 @@ const LoginPage = ({ navigation }: any) => {
                     {status ? <SC.Status>{status}</SC.Status> : null}
                     <SC.SignUpContainer>
                         <SC.SignUpText>Chưa có tài khoản? </SC.SignUpText>
-                        <SC.Link><SC.LinkTitle>Đăng kí ngay.</SC.LinkTitle></SC.Link>
+                        <SC.Link onPress={() => {navigation.navigate("Register")}}><SC.LinkTitle>Đăng kí ngay.</SC.LinkTitle></SC.Link>
                     </SC.SignUpContainer>
 
                 </SC.Container>

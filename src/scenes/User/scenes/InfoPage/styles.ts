@@ -52,7 +52,10 @@ const ValidationContainer = styled.View`
 const ValidationText = styled.Text`
     color: red;
 `;
-
+const PickerContainer = styled.View`
+    border-bottom-width: 1px;
+    border-bottom-color: blue;
+`;
 
 export const SC = {
     Container,
@@ -64,5 +67,6 @@ export const SC = {
     ActionBar,
     ButtonTitle,
     ValidationContainer,
-    ValidationText
+    ValidationText,
+    PickerContainer
 };
